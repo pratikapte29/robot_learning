@@ -51,17 +51,17 @@ def run_epsilon_greedy(bandit, n_actions: int, epsilon=0.1):
         reward = bandit.sample_reward(action)
         sum_reward += reward
 
+        # recursive computation from lecture slide 29
         Q[action] += (reward - Q[action]) / N[action]
 
 
         # logging for every 100 actions
 
         if (i+1) % 100 == 0:
-            step = i + 1
-            print(f"\nStep {step}")
+            print(f"\nStep {i+1}")
 
             print("Action % distribution:")
             for j in range(5):
-                print(f"Arm {j+1}: {(N[j] / step) * 100:.2f}%")
+                print(f"Arm {j+1}: {(N[j] / (i+1)) * 100:.2f}%")
 
-            print(f"Avg reward: {sum_reward / step:.4f}")
+            print(f"Avg reward: {sum_reward / (i+1):.4f}")
