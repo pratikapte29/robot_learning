@@ -65,3 +65,71 @@ def run_epsilon_greedy(bandit, n_actions: int, epsilon=0.1):
                 print(f"Arm {j+1}: {(N[j] / (i+1)) * 100:.2f}%")
 
             print(f"Avg reward: {sum_reward / (i+1):.4f}")
+
+
+def run_non_stationary(bandit_1, bandit_2, n_actions: int, epsilon=0.1, alpha=0.02):
+    """Implementing 1.4
+
+    Args:
+        bandit_1 (_type_): instance of the class FiveArmedBandits
+        bandit_2 (_type_): second instance of the same class
+        n_actions (int): number of actions to simulate
+        epsilon (float, optional): probability of choosing a random action.
+          Defaults to 0.1.
+        alpha (float, optional): constant learning rate. 
+          Defaults to 0.02.
+    """
+
+    # Sample Average
+    Q_1 = [0, 0, 0, 0, 0]
+    N_1 = [0, 0, 0, 0, 0]
+    sum_reward_1 = 0
+
+    # Constant Alpha
+    Q_2 = [0, 0, 0, 0, 0]
+    N_2 = [0, 0, 0, 0, 0]
+    sum_reward_2 = 0
+
+    for i in range(n_actions):
+
+        # Sample average computation 
+        if np.random.rand() < epsilon:
+            action_1 = np.random.randint(0, 5)
+        else:
+            action_1 = np.argmax(Q_1)
+
+        reward_1 = bandit_1.sample_reward(action_1)
+        sum_reward_1 += reward_1
+
+        N_1[action_1] += 1
+        Q_1[action_1] += (reward_1 - Q_1[action_1]) / N_1[action_1]
+
+        # learning rate alpha computtation (non stationary)
+        if np.random.rand() < epsilon:
+            action_2 = np.random.randint(0, 5)
+        else:
+            action_2 = np.argmax(Q_2)
+
+        reward_2 = bandit_2.sample_reward(action_2)
+        sum_reward_2 += reward_2
+
+        N_2[action_2] += 1
+        Q_2[action_2] += alpha * (reward_2 - Q_2[action_2])
+
+        # Logging after every 100 steps
+        if (i + 1) % 100 == 0:
+            print(f"Step {i+1}")
+            print()
+
+            print("[Sample Avg]")
+            print("Action % distribution:")
+            for j in range(5):
+                print(f"Arm {j+1}: {(N_1[j] / (i+1)) * 100:.2f}%")
+            print(f"Avg reward: {sum_reward_1 / (i+1):.4f}")
+            print()
+
+            print("[Alpha = 0.02]")
+            print("Action % distribution:")
+            for j in range(5):
+                print(f"Arm {j+1}: {(N_2[j] / (i+1)) * 100:.2f}%")
+            print(f"Avg reward: {sum_reward_2 / (i+1):.4f}")
