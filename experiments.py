@@ -67,8 +67,10 @@ def run_epsilon_greedy(bandit, n_actions: int, epsilon=0.1):
             print(f"Avg reward: {sum_reward / (i+1):.4f}")
 
 
-def run_non_stationary(bandit_1, bandit_2, n_actions: int, epsilon=0.1, alpha=0.02):
-    """Implementing 1.4
+def run_non_stationary(
+        bandit_1, bandit_2, n_actions: int, epsilon=0.1, alpha=0.02, Q=0
+        ):
+    """Implementing 1.4 and 1.5
 
     Args:
         bandit_1 (_type_): instance of the class FiveArmedBandits
@@ -78,16 +80,17 @@ def run_non_stationary(bandit_1, bandit_2, n_actions: int, epsilon=0.1, alpha=0.
           Defaults to 0.1.
         alpha (float, optional): constant learning rate. 
           Defaults to 0.02.
+        Q (int): initialization. Defaults to 0.
     """
 
     # Sample Average
-    Q_1 = [0, 0, 0, 0, 0]
-    N_1 = [0, 0, 0, 0, 0]
+    Q_1 = [Q] * 5
+    N_1 = [0] * 5
     sum_reward_1 = 0
 
     # Constant Alpha
-    Q_2 = [0, 0, 0, 0, 0]
-    N_2 = [0, 0, 0, 0, 0]
+    Q_2 = [Q] * 5
+    N_2 = [0] * 5
     sum_reward_2 = 0
 
     for i in range(n_actions):

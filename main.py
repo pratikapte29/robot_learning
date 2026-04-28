@@ -6,16 +6,27 @@ from experiments import run_non_stationary
 
 bandit_inst = FiveArmedBandit()
 bandit_alpha = FiveArmedBandit()
+
+# run 1.2
 # sample_average_reward = run_five_armed_bandit(bandit_inst, 10)
 
 # print("The sample average reward is: ", sample_average_reward)
 
+# run 1.3
 # run_epsilon_greedy(bandit=bandit_inst, n_actions=5000, epsilon=0.1)
+
+# run 1.4
+# run_non_stationary(bandit_1=bandit_inst, 
+#                    bandit_2=bandit_alpha, 
+#                    n_actions=5000, 
+#                    epsilon=0.1, 
+#                    alpha=0.02)
+
+# run 1.5
 
 run_non_stationary(bandit_1=bandit_inst, 
                    bandit_2=bandit_alpha, 
                    n_actions=5000, 
-                   epsilon=0.1, 
-                   alpha=0.02)
-
-
+                   epsilon=0, 
+                   alpha=0.02, 
+                   Q=6)
