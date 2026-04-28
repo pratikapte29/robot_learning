@@ -58,7 +58,8 @@ def run_epsilon_greedy(bandit, n_actions: int, epsilon=0.1):
         # logging for every 100 actions
 
         if (i+1) % 100 == 0:
-            print(f"\nStep {i+1}")
+            print()
+            print(f"Step {i+1}")
 
             print("Action % distribution:")
             for j in range(5):
